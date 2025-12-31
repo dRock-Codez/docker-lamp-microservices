@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  webserver:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./php:/var/www/html
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - php-app
+
+  php-app:
+    image: php:7.4-fpm
+    volumes:
+      - ./php:/var/www/html
+
+  database:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: my_project_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./mysql/data:/var/lib/mysql
